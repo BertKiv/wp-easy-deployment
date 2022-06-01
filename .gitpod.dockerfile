@@ -34,8 +34,8 @@ RUN go install github.com/mailhog/MailHog@latest && \
     apt-get update && \
     apt-get -qy install \
     #libapache2-mod-php \
-    php${PHP_VERSION} \
-    php${PHP_VERSION}-common \
+#     php${PHP_VERSION} \
+#     php${PHP_VERSION}-common \
     php${PHP_VERSION}-cli \
     php${PHP_VERSION}-mbstring \
     php${PHP_VERSION}-curl \

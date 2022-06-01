@@ -2,6 +2,6 @@
 
 wp plugin delete hello
 wp plugin delete akismet
-wp plugin activate ${REPO_NAME}
+wp plugin activate my-plugin
 
 # wp plugin install plugin_slug --activate

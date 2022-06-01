@@ -1,4 +1,3 @@
-
 # WordPress Setup Script
 export REPO_NAME=$(basename $GITPOD_REPO_ROOT)
 
@@ -28,13 +27,11 @@ function wp-setup () {
   
   # move the workspace temporarily
   mkdir $HOME/workspace
-  mv ${GITPOD_REPO_ROOT}/my-plugin $HOME/workspace/
-  mv ${GITPOD_REPO_ROOT}/my-theme $HOME/workspace/
-  mv ${GITPOD_REPO_ROOT}/.init.sh $HOME/workspace/
+  mv ${GITPOD_REPO_ROOT}/* $HOME/workspace/
   
   # create a debugger launch.json
   mkdir -p ${GITPOD_REPO_ROOT}/.theia
-  mv $HOME/wp-easy-deployment/conf/launch.json ${GITPOD_REPO_ROOT}/.theia/launch.json
+  mv $HOME/gitpod-wordpress/conf/launch.json ${GITPOD_REPO_ROOT}/.theia/launch.json
   
   # create a database for this WordPress
   echo 'Creating MySQL user and database ...'
@@ -64,16 +61,9 @@ function wp-setup () {
 
   # put the project files in the correct place
   echo 'Creating project files ...'
-  PROJECT_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/wp-content/$1
+  PROJECT_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/wp-content/$1/app
   mkdir -p $PROJECT_PATH
-  if [ "$1" = "plugins" ]; then
-    mv $HOME/workspace/my-plugin ${PROJECT_PATH}
-    DESTINATION=${PROJECT_PATH}/my-plugin
-  fi
-  if [ "$1" = "themes" ]; then
-    mv $HOME/workspace/my-theme ${PROJECT_PATH}
-    DESTINATION=${PROJECT_PATH}/my-theme
-  fi 
+  mv $HOME/workspace/* ${PROJECT_PATH}
   cd $DESTINATION
 
   # install project dependencies
@@ -87,14 +77,13 @@ function wp-setup () {
     npm i 2> /dev/null
   fi
 
-  WP_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}
-  if [ -f ${HOME}/workspace/.init.sh ]; then
+  if [ -f ${PROJECT_PATH}/.init.sh ]; then
     echo '.init.sh detected ...'
-    cp ${HOME}/workspace/.init.sh ${WP_PATH}
+    cp ${PROJECT_PATH}/.init.sh ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/.init.sh
     echo 'Running your .init.sh ...'
-    cd ${WP_PATH}/
-    /bin/bash ${WP_PATH}/.init.sh
-    rm -rf ${WP_PATH}/.init.sh
+    cd ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/
+    /bin/bash ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/.init.sh
+    rm -rf ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/.init.sh
   fi
   
   # finish

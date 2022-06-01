@@ -30,10 +30,11 @@ function wp-setup () {
   mkdir $HOME/workspace
   mv ${GITPOD_REPO_ROOT}/my-plugin $HOME/workspace/
   mv ${GITPOD_REPO_ROOT}/my-theme $HOME/workspace/
+  mv ${GITPOD_REPO_ROOT}/.init.sh $HOME/workspace/
   
   # create a debugger launch.json
   mkdir -p ${GITPOD_REPO_ROOT}/.theia
-  mv $HOME/gitpod-wordpress/conf/launch.json ${GITPOD_REPO_ROOT}/.theia/launch.json
+  mv $HOME/wp-easy-deployment/conf/launch.json ${GITPOD_REPO_ROOT}/.theia/launch.json
   
   # create a database for this WordPress
   echo 'Creating MySQL user and database ...'
@@ -66,10 +67,12 @@ function wp-setup () {
   PROJECT_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/wp-content/$1
   mkdir -p $PROJECT_PATH
   if [ "$1" = "plugins" ]; then
-    mv $HOME/workspace/my-plugin/* ${PROJECT_PATH}/my-plugin
+    mv $HOME/workspace/my-plugin ${PROJECT_PATH}
+    DESTINATION=${PROJECT_PATH}/my-plugin
   fi
   if [ "$1" = "themes" ]; then
-    mv $HOME/workspace/my-theme/* ${PROJECT_PATH}/my-theme
+    mv $HOME/workspace/my-theme ${PROJECT_PATH}
+    DESTINATION=${PROJECT_PATH}/my-theme
   fi 
   cd $DESTINATION
 
@@ -84,13 +87,14 @@ function wp-setup () {
     npm i 2> /dev/null
   fi
 
-  if [ -f ${PROJECT_PATH}/.init.sh ]; then
+  WP_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}
+  if [ -f ${HOME}/workspace/.init.sh ]; then
     echo '.init.sh detected ...'
-    cp ${PROJECT_PATH}/.init.sh ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/.init.sh
+    cp ${HOME}/workspace/.init.sh ${WP_PATH}
     echo 'Running your .init.sh ...'
-    cd ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/
-    /bin/bash ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/.init.sh
-    rm -rf ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/.init.sh
+    cd ${WP_PATH}/
+    /bin/bash ${WP_PATH}/.init.sh
+    rm -rf ${WP_PATH}/.init.sh
   fi
   
   # finish

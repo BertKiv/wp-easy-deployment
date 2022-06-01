@@ -33,7 +33,7 @@ RUN go install github.com/mailhog/MailHog@latest && \
     add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     apt-get -qy install \
-    libapache2-mod-php \
+    #libapache2-mod-php \
     php${PHP_VERSION} \
     php${PHP_VERSION}-common \
     php${PHP_VERSION}-cli \

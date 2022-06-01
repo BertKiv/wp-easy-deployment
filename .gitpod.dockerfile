@@ -54,7 +54,7 @@ RUN go install github.com/mailhog/MailHog@latest && \
     php-gmp \
     libgmp-dev \
     php${PHP_VERSION}-gmp \
-    php${PHP_VERSION}-imagick \
+    php${PHP_VERSION}-imagick && \
 
     cat /home/gitpod/gitpod-wordpress/conf/php.ini >> /etc/php/${PHP_VERSION}/apache2/php.ini && \
     ### Setup PHP in Apache ###

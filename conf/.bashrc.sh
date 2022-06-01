@@ -62,7 +62,7 @@ function wp-setup () {
 
   # put the project files in the correct place
   echo 'Creating project files ...'
-  PROJECT_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/wp-content/$1/${REPO_NAME}
+  PROJECT_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/wp-content/$1/app
   mkdir -p $PROJECT_PATH
   mv $HOME/workspace/* ${PROJECT_PATH}
   cd $DESTINATION

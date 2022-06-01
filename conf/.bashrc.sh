@@ -1,4 +1,3 @@
-
 # WordPress Setup Script
 export REPO_NAME=$(basename $GITPOD_REPO_ROOT)
 
@@ -6,8 +5,8 @@ function wp-init-database () {
   # user     = wordpress
   # password = wordpress
   # database = wordpress
-  mysql -e "CREATE DATABASE [IF NOT EXISTS] wordpress /*\!40100 DEFAULT CHARACTER SET utf8 */;"
-  mysql -e "CREATE USER [IF NOT EXISTS] wordpress@localhost IDENTIFIED BY 'wordpress';"
+  mysql -e "CREATE DATABASE wordpress /*\!40100 DEFAULT CHARACTER SET utf8 */;"
+  mysql -e "CREATE USER wordpress@localhost IDENTIFIED BY 'wordpress';"
   mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'localhost';"
   mysql -e "FLUSH PRIVILEGES;"
 }
@@ -29,9 +28,7 @@ function wp-setup () {
   # move the workspace temporarily
   mkdir $HOME/workspace
   mv ${GITPOD_REPO_ROOT}/* $HOME/workspace/
-  mkdir -p ${GITPOD_REPO_ROOT}/my-project
-  mv $HOME/workspace/* ${GITPOD_REPO_ROOT}/my-project
-
+  
   # create a debugger launch.json
   mkdir -p ${GITPOD_REPO_ROOT}/.theia
   mv $HOME/gitpod-wordpress/conf/launch.json ${GITPOD_REPO_ROOT}/.theia/launch.json
@@ -41,24 +38,19 @@ function wp-setup () {
   wp-init-database 1> /dev/null
   
   # install WordPress
-  
+  echo 'Installing WordPress ...'
   rm -rf ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}
   mkdir -p ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}
   cd ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/
-  
-  echo 'Downloading WordPress ...'
-  wp core download --path="${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/"
-  
-  echo 'Installing WordPress ...'
+  wp core download
   cp $HOME/gitpod-wordpress/conf/wp-config.php ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/wp-config.php
   wp core install \
     --url="$(gp url 8080 | sed -e s/https:\\/\\/// | sed -e s/\\///)" \
     --title="WordPress" \
     --admin_user="admin" \
     --admin_password="password" \
-    --admin_email="admin@gitpod.test" \
-    --path="${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/"
-
+    --admin_email="admin@gitpod.test"
+    
   echo 'Downloading Adminer ...'
   mkdir ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/database/
   wget -q https://www.adminer.org/latest.php -O ${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/database/index.php
@@ -69,21 +61,20 @@ function wp-setup () {
 
   # put the project files in the correct place
   echo 'Creating project files ...'
-  PROJECT_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/wp-content/$1/${REPO_NAME}
-  # mkdir -p $PROJECT_PATH
-  # mv $HOME/workspace/* ${PROJECT_PATH}
-  ln -s ${GITPOD_REPO_ROOT}/my-project $PROJECT_PATH
-  cd ${GITPOD_REPO_ROOT}/my-project
+  PROJECT_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/wp-content/$1/app
+  mkdir -p $PROJECT_PATH
+  mv $HOME/workspace/* ${PROJECT_PATH}
+  cd $DESTINATION
 
   # install project dependencies
   if [ -f composer.json ]; then
     echo 'Installing Composer packages ...'
-    composer install 2> /dev/null
+    composer update 2> /dev/null
   fi
   
   if [ -f package.json ]; then
     echo 'Installing NPM packages ...'
-    yarn install 2> /dev/null
+    npm i 2> /dev/null
   fi
 
   if [ -f ${PROJECT_PATH}/.init.sh ]; then
@@ -151,3 +142,6 @@ export -f browse-emails
 # use Node.js LTS
 nvm use lts/* > /dev/null
 export NODE_VERSION=$(node -v | sed 's/v//g')
+
+# WP-CLI auto completion
+. $HOME/wp-cli-completion.bash

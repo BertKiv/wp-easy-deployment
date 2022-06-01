@@ -30,8 +30,8 @@ RUN go install github.com/mailhog/MailHog@latest && \
     echo "include ${HOME}/gitpod-wordpress/conf/apache.conf" > /etc/apache2/apache2.conf && \
     echo ". ${HOME}/gitpod-wordpress/conf/apache.env.sh" > /etc/apache2/envvars && \
     ### PHP ###
-    # add-apt-repository ppa:ondrej/php && \
-    # apt-get update && \
+    add-apt-repository ppa:ondrej/php && \
+    apt-get update && \
     # apt-get -qy install \
     #     libapache2-mod-php \
     #     php${PHP_VERSION} \
@@ -50,6 +50,12 @@ RUN go install github.com/mailhog/MailHog@latest && \
     #     php${PHP_VERSION}-opcache \
     #     php-xdebug && \
     # apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* && \
+    apt-get -qy install \
+    php-gmp \
+    libgmp-dev \
+    php${PHP_VERSION}-gmp \
+    php${PHP_VERSION}-imagick \
+
     cat /home/gitpod/gitpod-wordpress/conf/php.ini >> /etc/php/${PHP_VERSION}/apache2/php.ini && \
     ### Setup PHP in Apache ###
     # a2dismod php* && \

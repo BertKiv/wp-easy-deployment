@@ -28,8 +28,8 @@ function wp-setup () {
   
   # move the workspace temporarily
   mkdir $HOME/workspace
-  # mv ${GITPOD_REPO_ROOT}/my-plugin $HOME/workspace/
-  # mv ${GITPOD_REPO_ROOT}/my-theme $HOME/workspace/
+  mv ${GITPOD_REPO_ROOT}/my-plugin 
+  mv ${GITPOD_REPO_ROOT}/my-theme $HOME/workspace/
   
   # create a debugger launch.json
   mkdir -p ${GITPOD_REPO_ROOT}/.theia
@@ -63,13 +63,15 @@ function wp-setup () {
 
   # put the project files in the correct place
   echo 'Creating project files ...'
-  PROJECT_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/wp-content/$1/app
-  mkdir -p $PROJECT_PATH
   if [ $1 = "plugins" ]; then
-    mv ${GITPOD_REPO_ROOT}/my-plugin ${PROJECT_PATH}
+    PROJECT_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/wp-content/$1/my-plugin
+    mkdir -p $PROJECT_PATH
+    mv $HOME/workspace/my-plugin/* ${PROJECT_PATH}
   fi
   if [ $1 = "themes" ]; then
-    mv ${GITPOD_REPO_ROOT}/my-theme ${PROJECT_PATH}
+    PROJECT_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/wp-content/$1/my-theme
+    mkdir -p $PROJECT_PATH
+    mv $HOME/workspace/my-theme/* ${PROJECT_PATH}
   fi 
   cd $DESTINATION
 

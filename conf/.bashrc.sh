@@ -28,7 +28,7 @@ function wp-setup () {
   
   # move the workspace temporarily
   mkdir $HOME/workspace
-  mv ${GITPOD_REPO_ROOT}/my-plugin 
+  mv ${GITPOD_REPO_ROOT}/my-plugin $HOME/workspace/
   mv ${GITPOD_REPO_ROOT}/my-theme $HOME/workspace/
   
   # create a debugger launch.json

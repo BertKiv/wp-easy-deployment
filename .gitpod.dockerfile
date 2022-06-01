@@ -36,19 +36,18 @@ RUN go install github.com/mailhog/MailHog@latest && \
     #libapache2-mod-php \
 #     php${PHP_VERSION} \
 #     php${PHP_VERSION}-common \
-    php${PHP_VERSION}-cli \
-    php${PHP_VERSION}-mbstring \
-    php${PHP_VERSION}-curl \
-    php${PHP_VERSION}-gd \
-    php${PHP_VERSION}-intl \
-    php${PHP_VERSION}-mysql \
-    php${PHP_VERSION}-xml \
-    php${PHP_VERSION}-json \
-    php${PHP_VERSION}-zip \
-    php${PHP_VERSION}-soap \
-    php${PHP_VERSION}-bcmath \
-    php${PHP_VERSION}-opcache \
-    php-gmp \
+#     php${PHP_VERSION}-cli \
+#     php${PHP_VERSION}-mbstring \
+#     php${PHP_VERSION}-curl \
+#     php${PHP_VERSION}-gd \
+#     php${PHP_VERSION}-intl \
+#     php${PHP_VERSION}-mysql \
+#     php${PHP_VERSION}-xml \
+#     php${PHP_VERSION}-json \
+#     php${PHP_VERSION}-zip \
+#     php${PHP_VERSION}-soap \
+#     php${PHP_VERSION}-bcmath \
+#     php${PHP_VERSION}-opcache \
     libgmp-dev \
     php${PHP_VERSION}-gmp \
     php${PHP_VERSION}-imagick \

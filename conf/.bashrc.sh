@@ -65,10 +65,10 @@ function wp-setup () {
   echo 'Creating project files ...'
   PROJECT_PATH=${GITPOD_REPO_ROOT}/${APACHE_DOCROOT}/wp-content/$1
   mkdir -p $PROJECT_PATH
-  if [ $(1) == "plugins" ]; then
+  if [ "$1" = "plugins" ]; then
     mv $HOME/workspace/my-plugin/* ${PROJECT_PATH}/my-plugin
   fi
-  if [ $(1) == "themes" ]; then
+  if [ "$1" = "themes" ]; then
     mv $HOME/workspace/my-theme/* ${PROJECT_PATH}/my-theme
   fi 
   cd $DESTINATION
